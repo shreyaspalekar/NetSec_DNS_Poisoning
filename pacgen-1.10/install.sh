@@ -9,5 +9,4 @@ echo ' of this license document, but changing it is not allowed.'
 echo
 echo 'Compiling pacgen.c version 1.10 to binary pacgen using gcc'
 
-gcc -g `libnet-config --cflags --defines` pacgen.c -o old_pacgen `libnet-config --libs`
-gcc -g `libnet-config --cflags --defines` pacgen_new.c -o pacgen `libnet-config --libs`
+gcc -g `libnet-config --cflags --defines` kpacgen.c -o pacgen `libnet-config --libs`
