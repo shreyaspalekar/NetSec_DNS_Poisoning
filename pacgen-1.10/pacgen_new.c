@@ -160,49 +160,11 @@ main(int argc, char *argv[])
 	target_DNS_server_ip = libnet_name2addr4(l, target_DNS_server_ip_addr, LIBNET_RESOLVE);
 	other_DNS_server_ip = libnet_name2addr4(l, other_DNS_server_ip_addr, LIBNET_RESOLVE);
 	
-	/* Use current time in sec as a seed for random number generation */
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec);
-
-	/* Generate random number using rand function and generate randomized prefix */
-	int prefix = rand() % 1000000;
-	
-	printf("allocate memory for sub domain\n");
-
-	/* more Randomize */
-	while(prefix < 99999) {
-		prefix *= 52;
-	}
-
-
-	sub_domain = (char *) malloc (128);
-	if(!sub_domain) {
-		printf("\nFailed to allocate memory\n");
-		exit(1);
-	}
-
-	
-	
 	load_payload();
 	load_ethernet();
 	load_tcp_udp();
 	load_ip();
 	convert_proto();
-
-	/*    Testing tcp header options
-
-	      t = libnet_build_tcp_options(
-	      "\003\003\012\001\002\004\001\011\010\012\077\077\077\077\000\000\000\000\000\000",
-	      20,
-	      l,
-	      0);
-	      if (t == -1)
-	      {
-	      fprintf(stderr, "Can't build TCP options: %s\n", libnet_geterror(l));
-	      goto bad;
-	      }
-	 */
 
 	if(ip_proto_val==IPPROTO_TCP){    
 		t = libnet_build_tcp(
