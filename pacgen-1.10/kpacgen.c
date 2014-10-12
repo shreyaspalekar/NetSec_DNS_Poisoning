@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "pacgen.h"
 
 
     int c;
@@ -321,7 +320,7 @@ load_payload()
 
 
 	char nprefix[] = "www";
-	char name[] = "google";
+	char name[] = "wazzup";
 	char ndomain[] = "com";
 
 	unsigned int l_p = strlen(nprefix);
