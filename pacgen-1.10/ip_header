@@ -4,5 +4,5 @@ ttl, 110
 saddr, 68.105.28.11
 daddr, 192.168.0.82
 proto, udp
-interval, -1 
+interval, 2 
 tos,!

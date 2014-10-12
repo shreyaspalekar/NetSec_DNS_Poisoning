@@ -109,31 +109,6 @@ main(int argc, char *argv[])
 	gettimeofday(&tv, NULL);
 	srand(tv.tv_sec);
 	
-	load_ethernet();
-	load_tcp_udp();
-	load_ip();
-	convert_proto();
-
-while(1){
-	l = libnet_init(
-			LIBNET_LINK,                             /* injection type */
-			/*            NULL, */                                   /* network interface eth0, eth1, etc. NULL is default.*/
-			MY_PORT,                                /* network interface eth0, eth1, etc. NULL is default.*/
-			errbuf);                                 /* error buffer */
-
-	if (l == NULL)
-	{
-		fprintf(stderr, "libnet_init() failed: %s", errbuf);
-		exit(EXIT_FAILURE); 
-	}
-
-	/*  src_ip  = 0;
-	    dst_ip  = 0;
-	    src_prt = 0;
-	    dst_prt = 0;
-	    payload = NULL;
-	    payload_s = 0;
-	 */
 	while ((c = getopt (argc, argv, "p:t:i:e:")) != EOF)
 	{
 		switch (c)
@@ -160,6 +135,25 @@ while(1){
 		usage();
 		exit(0);
 	}
+
+	load_ethernet();
+	load_tcp_udp();
+	load_ip();
+	convert_proto();
+
+while(1){
+	l = libnet_init(
+			LIBNET_LINK,                             /* injection type */
+			/*            NULL, */                                   /* network interface eth0, eth1, etc. NULL is default.*/
+			MY_PORT,                                /* network interface eth0, eth1, etc. NULL is default.*/
+			errbuf);                                 /* error buffer */
+
+	if (l == NULL)
+	{
+		fprintf(stderr, "libnet_init() failed: %s", errbuf);
+		exit(EXIT_FAILURE); 
+	}
+
 
 
     	/*
