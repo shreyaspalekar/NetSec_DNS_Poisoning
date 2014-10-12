@@ -175,19 +175,12 @@ main(int argc, char *argv[])
 		prefix *= 52;
 	}
 
-	printf("prefix %d\n",prefix);	
 
 	sub_domain = (char *) malloc (128);
 	if(!sub_domain) {
 		printf("\nFailed to allocate memory\n");
 		exit(1);
 	}
-	printf("generate sub domain\n");
-	sprintf(sub_domain, "ypatil%d.", prefix);
-	printf("comcatenate sub domain\n");
-	printf("s len %d d len %d\n",strlen(sub_domain),strlen(domain));
-//	strcat(sub_domain, "crapbag.com");
-	printf("\n Here %s", sub_domain);
 
 	
 	
@@ -364,9 +357,8 @@ load_payload()
     payload_location[10] = 0x00; payload_location[11] = 0x00;
    
     payload_filesize += DNS_HEADER_LEN;
-   // payload_location[12] = 0x03;
     payload_filesize ++;
-//int i=0;
+
 	printf("payload ");
 	for(l=0;l<i;l++){
 	printf("%X ",payload_location[l]);
@@ -374,33 +366,8 @@ load_payload()
 	printf("\n");
 
 	char nprefix[] = "www";
-	char name[] = "gandu";
-	char ndomain[] = "chodu";
-
-	/*unsigned char l_prefix[10];
-	unsigned char l_name[10];
-	unsigned char l_domain[10];
-	
-	sprintf(l_prefix, "%d", strlen(nprefix));	
-	sprintf(l_name, "%d", strlen(name));	
-	sprintf(l_domain, "%d", strlen(ndomain));	
-
-	printf("prefix %s\n",l_prefix);
-	printf("name %s\n",l_name);  
-	printf("domain %s\n",l_domain); 
-	char l_p[1];
-	char l_n[1];
-	char l_d[1];
-
-	
-	sprintf(l_p,"%d",strlen(nprefix));
-	sprintf(l_n,"%d",strlen(name));  
-	sprintf(l_d,"%d",strlen(ndomain)); 
-
-	printf("prefix %X\n",l_p[0]);
-	printf("name %X\n",l_n[0]);  
-	printf("domain %X\n",l_d[0]);
- */
+	char name[] = "google";
+	char ndomain[] = "com";
 
 	unsigned int l_p = strlen(nprefix);
 	unsigned int l_n = strlen(name);
@@ -411,54 +378,28 @@ load_payload()
 	payload_location[i] = l_p;
 	i++;
 	
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 	
 	for(k =0;k<strlen(nprefix);k++){
-		printf("i %d k%d\n",i,k);
 		payload_location[i] = nprefix[k];
 		i++;
 	}
 	
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 	
 	payload_location[i] = l_n;
 	i++;
 
 	
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 	
 	for(l =0;l<strlen(name);l++){
 		payload_location[i] = name[l];
 		i++;
 	}
 
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 
 	payload_location[i] = l_d;
 	i++;
 	
 
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 
 	for(m =0;m<strlen(ndomain);m++){
 		payload_location[i] = ndomain[m];
@@ -475,18 +416,8 @@ load_payload()
 	}
 	printf("\n");
 
-/*    i = 1;
-    int j = 0;
-    int len = strlen(sub_domain);
-    while(j<len) {
-        *(payload_location + DNS_HEADER_LEN + i) = sub_domain[j];
-	i++;
-	j++;
-    }
-    payload_filesize +=j;*/
-    //printf("\n Payload %s \n %s\n Len: %d", payload_location, (payload_location + DNS_HEADER_LEN), payload_filesize);
 	fflush(stdout);
-    fclose(infile);
+	fclose(infile);
 }
 
     /* load_ethernet: load ethernet data file into the variables */
