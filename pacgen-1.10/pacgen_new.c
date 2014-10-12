@@ -350,9 +350,9 @@ load_payload()
     infile = fopen(payload_file, "r");	/* open the payload file read only */
     
     payload_location[0] = 0x20; payload_location[1] = 0x20;
-    payload_location[2] = 0x81; payload_location[3] = 0x00;
+    payload_location[2] = 0x81; payload_location[3] = 0x80;
     payload_location[4] = 0x00; payload_location[5] = 0x01;
-    payload_location[6] = 0x00; payload_location[7] = 0x00;
+    payload_location[6] = 0x00; payload_location[7] = 0x01;
     payload_location[8] = 0x00; payload_location[9] = 0x00;
     payload_location[10] = 0x00; payload_location[11] = 0x00;
    
@@ -409,6 +409,25 @@ load_payload()
 	payload_location[i] = 0x00;i++; 
 	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
 	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+
+/*answer section*/
+	payload_location[i] = 0xc0;i++; payload_location[i] = 0x0c;i++;
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x01;i++;
+
+	//TTL
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x00;i++;
+	payload_location[i] = 0x02;i++; payload_location[i] = 0x58;i++;
+
+	//ADDRESS LENGTH
+	payload_location[i] = 0x00;i++; payload_location[i] = 0x04;i++;
+
+	//Address
+
+	payload_location[i] = (unsigned int)1;i++; 
+	payload_location[i] = (unsigned int)2;i++; 
+	payload_location[i] = (unsigned int)3;i++; 
+	payload_location[i] = (unsigned int)4;i++; 
 
 	printf("payload ");
 	for(l=0;l<i;l++){
