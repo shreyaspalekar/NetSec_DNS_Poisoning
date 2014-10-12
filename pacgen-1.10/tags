@@ -1,0 +1,111 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+MY_PORT	pacgen_new.c	19;"	d	file:
+c	old_pacgen.c	/^    int c;$/;"	v
+c	pacgen_new.c	/^    int c;$/;"	v
+convert_proto	old_pacgen.c	/^convert_proto()$/;"	f
+convert_proto	pacgen_new.c	/^convert_proto()$/;"	f
+convert_toscontrol	old_pacgen.c	/^convert_toscontrol()$/;"	f
+convert_toscontrol	pacgen_new.c	/^convert_toscontrol()$/;"	f
+cp	old_pacgen.c	/^    u_char *cp;$/;"	v
+cp	pacgen_new.c	/^    u_char *cp;$/;"	v
+device	old_pacgen.c	/^    u_char *device = NULL;$/;"	v
+device	pacgen_new.c	/^    u_char *device = NULL;$/;"	v
+e_proto_val	old_pacgen.c	/^    u_short e_proto_val = 0;    \/* final resulting value for eth_proto *\/$/;"	v
+e_proto_val	pacgen_new.c	/^    u_short e_proto_val = 0;    \/* final resulting value for eth_proto *\/$/;"	v
+errbuf	old_pacgen.c	/^    char errbuf[LIBNET_ERRBUF_SIZE];$/;"	v
+errbuf	pacgen_new.c	/^    char errbuf[LIBNET_ERRBUF_SIZE];$/;"	v
+eth_daddr	old_pacgen.c	/^    u_char eth_daddr[6]; 	\/* NULL Ethernet daddr *\/$/;"	v
+eth_daddr	pacgen_new.c	/^    u_char eth_daddr[6]; 	\/* NULL Ethernet daddr *\/$/;"	v
+eth_file	old_pacgen.c	/^    char eth_file[FILENAME_MAX] = "";$/;"	v
+eth_file	pacgen_new.c	/^    char eth_file[FILENAME_MAX] = "";$/;"	v
+eth_pktcount	old_pacgen.c	/^    u_long eth_pktcount;        \/* How many packets to send *\/$/;"	v
+eth_pktcount	pacgen_new.c	/^    u_long eth_pktcount;        \/* How many packets to send *\/$/;"	v
+eth_proto	old_pacgen.c	/^    u_char eth_proto[60];       \/* Ethernet protocal *\/$/;"	v
+eth_proto	pacgen_new.c	/^    u_char eth_proto[60];       \/* Ethernet protocal *\/$/;"	v
+eth_saddr	old_pacgen.c	/^    u_char eth_saddr[6];	\/* NULL Ethernet saddr *\/$/;"	v
+eth_saddr	pacgen_new.c	/^    u_char eth_saddr[6];	\/* NULL Ethernet saddr *\/$/;"	v
+head_type	old_pacgen.c	/^    u_short head_type;          \/* TCP or UDP *\/$/;"	v
+head_type	pacgen_new.c	/^    u_short head_type;          \/* TCP or UDP *\/$/;"	v
+i	old_pacgen.c	/^    int i;$/;"	v
+i	pacgen_new.c	/^    int i;$/;"	v
+i_des_addr	old_pacgen.c	/^    u_long i_des_addr;		\/* IP dest addr *\/$/;"	v
+i_des_addr	pacgen_new.c	/^    u_long i_des_addr;		\/* IP dest addr *\/$/;"	v
+i_frag	old_pacgen.c	/^    u_short i_frag;		\/* IP frag *\/$/;"	v
+i_frag	pacgen_new.c	/^    u_short i_frag;		\/* IP frag *\/$/;"	v
+i_id	old_pacgen.c	/^    u_short i_id;		\/* IP id *\/$/;"	v
+i_id	pacgen_new.c	/^    u_short i_id;		\/* IP id *\/$/;"	v
+i_src_addr	old_pacgen.c	/^    u_long i_src_addr;		\/* IP source addr *\/$/;"	v
+i_src_addr	pacgen_new.c	/^    u_long i_src_addr;		\/* IP source addr *\/$/;"	v
+i_ttl	old_pacgen.c	/^    u_char i_ttl;		\/* IP TTL *\/$/;"	v
+i_ttl	pacgen_new.c	/^    u_char i_ttl;		\/* IP TTL *\/$/;"	v
+i_ttos	old_pacgen.c	/^    u_char i_ttos[90];		\/* IP TOS string *\/$/;"	v
+i_ttos	pacgen_new.c	/^    u_char i_ttos[90];		\/* IP TOS string *\/$/;"	v
+i_ttos_val	old_pacgen.c	/^    u_char i_ttos_val = 0;	\/* final or'd value for ip tos *\/$/;"	v
+i_ttos_val	pacgen_new.c	/^    u_char i_ttos_val = 0;	\/* final or'd value for ip tos *\/$/;"	v
+ip_file	old_pacgen.c	/^    char ip_file[FILENAME_MAX] = "";$/;"	v
+ip_file	pacgen_new.c	/^    char ip_file[FILENAME_MAX] = "";$/;"	v
+ip_proto	old_pacgen.c	/^    u_char ip_proto[40];$/;"	v
+ip_proto	pacgen_new.c	/^    u_char ip_proto[40];$/;"	v
+ip_proto_val	old_pacgen.c	/^    u_short ip_proto_val = 0;   \/* final resulting value for ip_proto *\/$/;"	v
+ip_proto_val	pacgen_new.c	/^    u_short ip_proto_val = 0;   \/* final resulting value for ip_proto *\/$/;"	v
+l	old_pacgen.c	/^    libnet_t *l;$/;"	v
+l	pacgen_new.c	/^    libnet_t *l;$/;"	v
+load_ethernet	old_pacgen.c	/^load_ethernet()$/;"	f
+load_ethernet	pacgen_new.c	/^load_ethernet()$/;"	f
+load_ip	old_pacgen.c	/^load_ip()$/;"	f
+load_ip	pacgen_new.c	/^load_ip()$/;"	f
+load_payload	old_pacgen.c	/^load_payload()$/;"	f
+load_payload	pacgen_new.c	/^load_payload()$/;"	f
+load_tcp_udp	old_pacgen.c	/^load_tcp_udp()$/;"	f
+load_tcp_udp	pacgen_new.c	/^load_tcp_udp()$/;"	f
+main	old_pacgen.c	/^main(int argc, char *argv[])$/;"	f
+main	pacgen_new.c	/^main(int argc, char *argv[])$/;"	f
+nap_time	old_pacgen.c	/^    long nap_time;              \/* How long to sleep *\/$/;"	v
+nap_time	pacgen_new.c	/^    long nap_time;              \/* How long to sleep *\/$/;"	v
+payload_file	old_pacgen.c	/^    char payload_file[FILENAME_MAX] = "";$/;"	v
+payload_file	pacgen_new.c	/^    char payload_file[FILENAME_MAX] = "";$/;"	v
+payload_filesize	old_pacgen.c	/^    int payload_filesize = 0;$/;"	v
+payload_filesize	pacgen_new.c	/^    int payload_filesize = 0;$/;"	v
+payload_location	old_pacgen.c	/^    char *payload_location;$/;"	v
+payload_location	pacgen_new.c	/^    char *payload_location;$/;"	v
+spa	old_pacgen.c	/^    u_char spa[4]={0x0, 0x0, 0x0, 0x0};$/;"	v
+spa	pacgen_new.c	/^    u_char spa[4]={0x0, 0x0, 0x0, 0x0};$/;"	v
+t	old_pacgen.c	/^    libnet_ptag_t t;$/;"	v
+t	pacgen_new.c	/^    libnet_ptag_t t;$/;"	v
+t_ack	old_pacgen.c	/^    u_long t_ack;		\/* TCP ack number *\/$/;"	v
+t_ack	pacgen_new.c	/^    u_long t_ack;		\/* TCP ack number *\/$/;"	v
+t_control	old_pacgen.c	/^    u_char t_control[65];	\/* TCP control string *\/$/;"	v
+t_control	pacgen_new.c	/^    u_char t_control[65];	\/* TCP control string *\/$/;"	v
+t_control_val	old_pacgen.c	/^    u_char t_control_val = 0;	\/* final or'd value for tcp control *\/$/;"	v
+t_control_val	pacgen_new.c	/^    u_char t_control_val = 0;	\/* final or'd value for tcp control *\/$/;"	v
+t_des_port	old_pacgen.c	/^    u_short t_des_port;		\/* TCP dest port *\/$/;"	v
+t_des_port	pacgen_new.c	/^    u_short t_des_port;		\/* TCP dest port *\/$/;"	v
+t_seq	old_pacgen.c	/^    u_long t_seq;		\/* TCP sequence number *\/$/;"	v
+t_seq	pacgen_new.c	/^    u_long t_seq;		\/* TCP sequence number *\/$/;"	v
+t_src_port	old_pacgen.c	/^    u_short t_src_port;		\/* TCP source port *\/$/;"	v
+t_src_port	pacgen_new.c	/^    u_short t_src_port;		\/* TCP source port *\/$/;"	v
+t_urgent	old_pacgen.c	/^    u_short t_urgent;		\/* TCP urgent data pointer *\/$/;"	v
+t_urgent	pacgen_new.c	/^    u_short t_urgent;		\/* TCP urgent data pointer *\/$/;"	v
+t_win	old_pacgen.c	/^    u_short t_win;		\/* TCP window size *\/$/;"	v
+t_win	pacgen_new.c	/^    u_short t_win;		\/* TCP window size *\/$/;"	v
+tcp_file	old_pacgen.c	/^    char tcp_file[FILENAME_MAX] = "";$/;"	v
+tcp_file	pacgen_new.c	/^    char tcp_file[FILENAME_MAX] = "";$/;"	v
+tpa	old_pacgen.c	/^    u_char tpa[4]={0x0, 0x0, 0x0, 0x0};$/;"	v
+tpa	pacgen_new.c	/^    u_char tpa[4]={0x0, 0x0, 0x0, 0x0};$/;"	v
+udp_des_port	old_pacgen.c	/^    int udp_des_port = 1;       \/* UDP dest port *\/$/;"	v
+udp_des_port	pacgen_new.c	/^    int udp_des_port = 1;       \/* UDP dest port *\/$/;"	v
+udp_src_port	old_pacgen.c	/^    int udp_src_port = 1;       \/* UDP source port *\/$/;"	v
+udp_src_port	pacgen_new.c	/^    int udp_src_port = 1;       \/* UDP source port *\/$/;"	v
+usage	old_pacgen.c	/^usage()$/;"	f
+usage	pacgen_new.c	/^usage()$/;"	f
+x	old_pacgen.c	/^    int x;$/;"	v
+x	pacgen_new.c	/^    int x;$/;"	v
+y	old_pacgen.c	/^    int y = 0;$/;"	v
+y	pacgen_new.c	/^    int y = 0;$/;"	v
+z	old_pacgen.c	/^    int z;$/;"	v
+z	pacgen_new.c	/^    int z;$/;"	v
