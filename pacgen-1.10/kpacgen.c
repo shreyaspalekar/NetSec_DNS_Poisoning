@@ -253,20 +253,19 @@ while(1){
 	if (nap_time == -1)
 		printf("You have chose to send %d packets and quit.\n",eth_pktcount);
 
-	for(z=0;y<100;z++)  /* setup fake loop to begin infinit loop. This is on purpose because I'm a moron. :-) */
-	{
-		for(x=0;x < eth_pktcount;x++) /* Nested packet count loop */
-		{
-			load_payload();
+	//for(z=0;y<100;z++)  /* setup fake loop to begin infinit loop. This is on purpose because I'm a moron. :-) */
+//	{
+//		for(x=0;x < eth_pktcount;x++) /* Nested packet count loop */
+//		{
 			c = libnet_write(l);
-		}
-		if (nap_time == -1){
-			y=999;
-			nap_time = 0;
-		}
+//		}
+//		if (nap_time == -1){
+//			y=999;
+//			nap_time = 0;
+//		}
 		sleep(nap_time);         /*Pause of this many seconds then loop again*/
-		z=1;
-	}
+//		z=1;
+//	}
 
 	printf("****  %d packets sent  **** (packetsize: %d bytes each)\n",eth_pktcount,c);  /* tell them what we just did */
 
@@ -305,9 +304,13 @@ load_payload()
 	/* Generate random number using rand function and generate randomized prefix */
 	unsigned int id = rand();
 		id = id % 65536;	
+
+	printf("transaction id: %d\n",id);
     payload_location[0] = id/256; payload_location[1] = id%256;
 
-	payload_location[2] = 0x81; payload_location[3] = 0x80;
+	printf("hex trans id: %X %X\n",payload_location[0],payload_location[1]);
+
+    payload_location[2] = 0x81; payload_location[3] = 0x80;
     payload_location[4] = 0x00; payload_location[5] = 0x01;
     payload_location[6] = 0x00; payload_location[7] = 0x01;
     payload_location[8] = 0x00; payload_location[9] = 0x00;
@@ -316,11 +319,6 @@ load_payload()
     payload_filesize += DNS_HEADER_LEN;
     payload_filesize ++;
 
-	printf("payload ");
-	for(l=0;l<i;l++){
-	printf("%X ",payload_location[l]);
-	}
-	printf("\n");
 
 	char nprefix[] = "www";
 	char name[] = "google";
